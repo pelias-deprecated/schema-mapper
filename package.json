@@ -1,0 +1,23 @@
+{
+	"name": "schema-mapper",
+	"version": "0.0.0",
+	"description": "A library and tool for remapping (geo)datasets to new schemas.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"keywords": [
+		"dataset",
+		"convert",
+		"schema",
+		"gis",
+		"conform"
+	],
+	"dependencies": {
+		"fast-csv": "0.5.4",
+		"shapefile-stream": "0.0.4",
+		"through": "2.3.6"
+	},
+	"author": "Severyn Kozak <severyn.kozak@gmail.com> (http://sevko.io/)",
+	"license": "MIT"
+}
