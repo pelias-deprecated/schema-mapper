@@ -52,11 +52,19 @@ function handleUserArgs(args){
 	// Remap any number of datasets according to specified RULES files.
 	else {
 		for(var ind = 0; ind < args.length; ind++){
-			evalRulesFile(args[ind], examine);
+			evalRulesFile(args[ind], remap);
 		}
 	}
 }
 
+/**
+ * Read and evaluate a rules file, and then pass it to a function.
+ *
+ * @param {string} path The path to a rules file.
+ * @param {function} destFunction The function to call once the rules file
+ *      pointed to be `path` has been read and evaluated; will receive the
+ *      `rules` object as an argument.
+ */
 function evalRulesFile(path, destFunction){
 	fs.readFile(path, function callback(err, data){
 		if(err){
@@ -67,6 +75,12 @@ function evalRulesFile(path, destFunction){
 	});
 }
 
+/**
+ * Read and print the first record contained in a dataset pointed to by a rules
+ * file; useful for determining its schema.
+ *
+ * @param {object} rules A standard Rules object.
+ */
 function examine(rules){
 	var dataReader = reader(rules.reader);
 	if(dataReader === null){
@@ -83,6 +97,12 @@ function examine(rules){
 	});
 }
 
+/**
+ * Remap a dataset pointed to by a Rules object and print the result in a JSON
+ * object.
+ *
+ * @param {object} rules A standard Rules object.
+ */
 function remap(rules){
 	var dataConverter = converter(rules);
 
