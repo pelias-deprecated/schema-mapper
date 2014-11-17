@@ -2,6 +2,7 @@
  * A CLI tool that wraps the `schema-mapper` library.
  */
 
+var fs = require("fs");
 var jsonStream = require("JSONStream");
 var converter = require("./lib/converter");
 var reader = require("./lib/reader");
@@ -45,16 +46,25 @@ function handleUserArgs(args){
 			);
 			process.exit(1);
 		}
-
-		examine(require("./" + args[1]));
+		evalRulesFile(args[1], examine);
 	}
 
 	// Remap any number of datasets according to specified RULES files.
 	else {
 		for(var ind = 0; ind < args.length; ind++){
-			remap(require("./" + args[ind]));
+			evalRulesFile(args[ind], examine);
 		}
 	}
+}
+
+function evalRulesFile(path, destFunction){
+	fs.readFile(path, function callback(err, data){
+		if(err){
+			console.error(err);
+			process.exit(1);
+		}
+		destFunction(eval("(" + data.toString() + ")"));
+	});
 }
 
 function examine(rules){
