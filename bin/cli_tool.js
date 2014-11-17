@@ -1,11 +1,14 @@
+#! /usr/bin/env node
+
 /**
  * A CLI tool that wraps the `schema-mapper` library.
  */
 
 var fs = require("fs");
 var jsonStream = require("JSONStream");
-var converter = require("./lib/converter");
-var reader = require("./lib/reader");
+
+var schemaMapper = require("../schema-mapper");
+var reader = require("../lib/reader");
 
 /**
  * Handle command-line arguments.
@@ -104,7 +107,7 @@ function examine(rules){
  * @param {object} rules A standard Rules object.
  */
 function remap(rules){
-	var dataConverter = converter(rules);
+	var dataConverter = schemaMapper(rules);
 
 	if(dataConverter === null){
 		console.error(

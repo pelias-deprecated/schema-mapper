@@ -1,10 +1,13 @@
 {
 	"name": "schema-mapper",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "A library and tool for remapping (geo)datasets to new schemas.",
-	"main": "index.js",
+	"main": "schema-mapper.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"bin": {
+		"schema-mapper": "bin/cli_tool.js"
 	},
 	"keywords": [
 		"dataset",
