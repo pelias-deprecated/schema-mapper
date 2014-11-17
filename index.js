@@ -36,6 +36,7 @@ function handleUserArgs(args){
 		console.log(helpMessage);
 	}
 
+	// Examine a single object in the target dataset, to determine its schema.
 	else if(args[0] === "--examine" || args[0] === "-e"){
 		if(args.length !== 2){
 			console.error(
@@ -45,40 +46,47 @@ function handleUserArgs(args){
 			process.exit(1);
 		}
 
-		var rulesFile = require("./" + args[1]);
-		var dataReader = reader(rulesFile.reader);
-		if(dataReader === null){
-			console.error(
-				"No Reader could be found for the `%s` format.",
-				rulesFile.reader.format
-			);
-			process.exit(1);
-		}
-
-		dataReader.once("readable", function (){
-			console.log(JSON.stringify(dataReader.read(), undefined, 4));
-			process.exit(0);
-		});
+		examine(require("./" + args[1]));
 	}
 
+	// Remap any number of datasets according to specified RULES files.
 	else {
 		for(var ind = 0; ind < args.length; ind++){
-			var rulesFile = require("./" + args[ind]);
-			var dataConverter = converter(rulesFile);
-
-			if(dataConverter === null){
-				console.error(
-					"No Reader could be found for the `%s` format.",
-					rulesFile.reader.format
-				);
-				process.exit(1);
-			}
-
-			dataConverter
-				.pipe(jsonStream.stringify('{"objects":[\n', ",\n", "\n]}\n"))
-				.pipe(process.stdout);
+			remap(require("./" + args[ind]));
 		}
 	}
+}
+
+function examine(rules){
+	var dataReader = reader(rules.reader);
+	if(dataReader === null){
+		console.error(
+			"No Reader could be found for the `%s` format.",
+			rules.reader.format
+		);
+		process.exit(1);
+	}
+
+	dataReader.once("readable", function (){
+		console.log(JSON.stringify(dataReader.read(), undefined, 4));
+		process.exit(0);
+	});
+}
+
+function remap(rules){
+	var dataConverter = converter(rules);
+
+	if(dataConverter === null){
+		console.error(
+			"No Reader could be found for the `%s` format.",
+			rules.reader.format
+		);
+		process.exit(1);
+	}
+
+	dataConverter
+		.pipe(jsonStream.stringify('{"objects":[\n', ",\n", "\n]}\n"))
+		.pipe(process.stdout);
 }
 
 handleUserArgs(process.argv.slice(2));
