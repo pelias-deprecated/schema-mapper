@@ -1,5 +1,5 @@
-var mapper = require("./mapper");
-var reader = require("./reader");
+var mapper = require("./lib/mapper");
+var reader = require("./lib/reader");
 
 function converter(rules){
 	var dataReader = reader(rules.reader);
