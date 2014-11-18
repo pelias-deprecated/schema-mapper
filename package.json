@@ -1,14 +1,6 @@
 {
 	"name": "schema-mapper",
-	"version": "0.3.0",
 	"description": "A library and tool for remapping (geo)datasets to new schemas.",
-	"main": "schema-mapper.js",
-	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"bin": {
-		"schema-mapper": "bin/cli_tool.js"
-	},
 	"keywords": [
 		"dataset",
 		"convert",
@@ -16,6 +8,24 @@
 		"gis",
 		"conform"
 	],
+	"version": "0.3.1",
+	"author": "Severyn Kozak <severyn.kozak@gmail.com> (http://sevko.io/)",
+	"license": "MIT",
+	"homepage": "https://github.com/pelias/schema-mapper",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pelias/addresses"
+	},
+	"bugs": {
+		"url": "https://github.com/pelias/addresses/issues"
+	},
+	"main": "schema-mapper.js",
+	"bin": {
+		"schema-mapper": "bin/cli_tool.js"
+	},
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
 	"dependencies": {
 		"JSONStream": "0.9.0",
 		"combined-stream": "0.0.7",
@@ -24,7 +34,5 @@
 		"osmium-stream": "1.0.1",
 		"shapefile-stream": "0.0.4",
 		"through": "2.3.6"
-	},
-	"author": "Severyn Kozak <severyn.kozak@gmail.com> (http://sevko.io/)",
-	"license": "MIT"
+	}
 }
