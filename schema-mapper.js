@@ -1,5 +1,6 @@
 var mapper = require("./lib/mapper");
 var reader = require("./lib/reader");
+var combinedStream = require("combined-stream");
 
 /**
  * Read and evaluate a rules file, and then pass it to a function.
@@ -19,12 +20,28 @@ function loadRulesFile(path, destFunction){
 	});
 }
 
+/**
+ * Given one or more Rules objects, create a readable stream of remapped
+ * objects from the datasets they specify.
+ *
+ * @param {Rules object | array of Rules object} rules Either one Rules object,
+ *      or an array of them.
+ * @return {readable Stream} All of the remapped data streams (created per
+ *      `rules`) appended into a single Readable stream.
+ */
 function createConverter(rules){
-	var dataReader = reader(rules.reader);
-	if(dataReader === null){
-		return null;
+	var converter = combinedStream.create();
+	if(!(rules instanceof Array)){
+		rules = [rules];
 	}
-	return dataReader.pipe(mapper(rules.mapper));
+	for(var ind = 0; ind < rules.length; ind++){
+		var dataReader = reader(rules[ind].reader);
+		if(dataReader === null){
+			return null;
+		}
+		converter.append(dataReader.pipe(mapper(rules[ind].mapper)));
+	}
+	return converter;
 }
 
 module.exports = {
