@@ -49,33 +49,15 @@ function handleUserArgs(args){
 			);
 			process.exit(1);
 		}
-		evalRulesFile(args[1], examine);
+		schemaMapper.loadRulesFile(args[1], examine);
 	}
 
 	// Remap any number of datasets according to specified RULES files.
 	else {
 		for(var ind = 0; ind < args.length; ind++){
-			evalRulesFile(args[ind], remap);
+			schemaMapper.loadRulesFile(args[ind], remap);
 		}
 	}
-}
-
-/**
- * Read and evaluate a rules file, and then pass it to a function.
- *
- * @param {string} path The path to a rules file.
- * @param {function} destFunction The function to call once the rules file
- *      pointed to be `path` has been read and evaluated; will receive the
- *      `rules` object as an argument.
- */
-function evalRulesFile(path, destFunction){
-	fs.readFile(path, function callback(err, data){
-		if(err){
-			console.error(err);
-			process.exit(1);
-		}
-		destFunction(eval("(" + data.toString() + ")"));
-	});
 }
 
 /**
