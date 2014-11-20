@@ -54,9 +54,7 @@ function handleUserArgs(args){
 
 	// Remap any number of datasets according to specified RULES files.
 	else {
-		for(var ind = 0; ind < args.length; ind++){
-			schemaMapper.loadRulesFile(args[ind], remap);
-		}
+		schemaMapper.loadRulesFiles(args, remap);
 	}
 }
 
@@ -89,7 +87,7 @@ function examine(rules){
  * @param {object} rules A standard Rules object.
  */
 function remap(rules){
-	var dataConverter = schemaMapper(rules);
+	var dataConverter = schemaMapper.createConverter(rules);
 
 	if(dataConverter === null){
 		console.error(

@@ -1,23 +1,39 @@
+var fs = require("fs");
+var combinedStream = require("combined-stream");
 var mapper = require("./lib/mapper");
 var reader = require("./lib/reader");
-var combinedStream = require("combined-stream");
 
 /**
  * Read and evaluate a rules file, and then pass it to a function.
  *
- * @param {string} path The path to a rules file.
- * @param {function} destFunction The function to call once the rules file
- *      pointed to be `path` has been read and evaluated; will receive the
- *      `rules` object as an argument.
+ * @param {string | array of string} paths One or more paths to rules objects,
+ *      which will be read, evaluated, and passed to `callback()` as an array
+ *      argument.
+ * @param {function} callback The function to call once the rules files
+ *      pointed to be `path` have been read and evaluated; will receive the
+ *      `rules` objects as an array argument.
  */
-function loadRulesFile(path, destFunction){
-	fs.readFile(path, function callback(err, data){
-		if(err){
-			console.error(err);
-			process.exit(1);
-		}
-		destFunction(eval("(" + data.toString() + ")"));
-	});
+function loadRulesFiles(paths, callback){
+	if(!(paths instanceof Array)){
+		paths = [paths];
+	}
+
+	var numFilesRead = 0;
+	var rulesObjects = [];
+
+	for(var ind = 0; ind < paths.length; ind++){
+		fs.readFile(paths[ind], function readFileCallback(err, data){
+			if(err){
+				console.error(err);
+				process.exit(1);
+			}
+
+			rulesObjects.push(eval("(" + data.toString() + ")"))
+			if(++numFilesRead == paths.length){
+				callback(rulesObjects);
+			}
+		});
+	}
 }
 
 /**
@@ -46,5 +62,5 @@ function createConverter(rules){
 
 module.exports = {
 	createConverter: createConverter,
-	loadRulesFile: loadRulesFile
+	loadRulesFiles: loadRulesFiles
 }
