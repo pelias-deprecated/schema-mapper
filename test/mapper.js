@@ -90,6 +90,60 @@ tests.createMapperFields = function createMapperFields(test){
 }
 
 /**
+ * Test whether the Transform stream created by `createMapper()` maps fields
+ * correctly according to an object with a `coalesce` key, by writing a number
+ * of dummy objects through a simple mapper.
+ */
+tests.createMapperObjectCoalesce = function createMapperObjectCoalesce(test){
+	var input = [
+		{a: 1, b: null},
+		{a: null, b: 4},
+		{a: null, b: null}
+	];
+
+	var mapperConfig = {
+		fields: {
+			coalesced: {"coalesce": ["a", ".b"]}
+		}
+	}
+
+	var output = [
+		{coalesced: 1},
+		{coalesced: 4},
+		{coalesced: null}
+	];
+
+	testCreateMapper(test, input, mapperConfig, output);
+}
+
+/**
+ * Test whether the Transform stream created by `createMapper()` maps fields
+ * correctly according to an object with a `constant` key, by writing a number
+ * of dummy objects through a simple mapper.
+ */
+tests.createMapperObjectConstant = function createMapperObjectConstant(test){
+	var input = [
+		{a: 1},
+		{a: null},
+		{a: null}
+	];
+
+	var mapperConfig = {
+		fields: {
+			coalesced: {"constant": 1}
+		}
+	}
+
+	var output = [
+		{coalesced: 1},
+		{coalesced: 1},
+		{coalesced: 1}
+	];
+
+	testCreateMapper(test, input, mapperConfig, output);
+}
+
+/**
  * Test whether the Transform stream created by `createMapper()`
  * preserves/discards objects according to `keep()`, by writing a number of
  * dummy objects through a simple mapper.
