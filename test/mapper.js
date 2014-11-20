@@ -80,29 +80,13 @@ tests.createMapperFields = function createMapperFields(test){
 		}
 	}
 
-	var expectedOutput = [
+	var output = [
 		{col1: 1, col2: 2},
 		{col1: 3, col2: 4},
 		{col1: 5, col2: 6}
 	];
 
-	test.plan(expectedOutput.length);
-
-	var mapperStream = mapper.createMapper(mapperConfig);
-	var testStream = new readableStream.Writable({objectMode: true});
-	testStream._write = function write(data, enc, next){
-		var msg = util.format(
-			"Remapped object `%s` matches expected.",
-			JSON.stringify(expectedOutput[ind])
-		);
-		test.deepEqual(data, expectedOutput.shift(), msg);
-		next();
-	};
-	mapperStream.pipe(testStream);
-
-	for(var ind = 0; ind < input.length; ind++){
-		mapperStream.write(input[ind]);
-	}
+	testCreateMapper(test, input, mapperConfig, output);
 }
 
 /**
@@ -127,27 +111,43 @@ tests.createMapperKeep = function createMapperKeep(test){
 		}
 	}
 
-	var expectedOutput = [
+	var output = [
 		{a: 1, b: 2},
 		{a: 2, b: 1},
 	];
 
-	test.plan(expectedOutput.length);
+	testCreateMapper(test, input, mapperConfig, output);
+}
 
+/**
+ * Test whether `createMapper()` is producing correct output for a given set of
+ * inputs and a Mapper configuration object.
+ *
+ * @param {object} test A Tape test object.
+ * @param {array of object} input An array of input objects, to be written to
+ *      the mapper.
+ * @param {object} mapperConfig A Rules object to configure the Mapper stream.
+ * @param {array of object} output An array of expected output objects, to be
+ *      read from the mapper.
+ */
+function testCreateMapper(test, input, mapperConfig, output){
+	test.plan(output.length);
 	var mapperStream = mapper.createMapper(mapperConfig);
+
 	var testStream = new readableStream.Writable({objectMode: true});
 	testStream._write = function write(data, enc, next){
 		var msg = util.format(
-			"Remapped object `%s` matches expected.",
-			JSON.stringify(expectedOutput[ind])
+			"Remapped object `%s` matches output.", JSON.stringify(data)
 		);
-		test.deepEqual(data, expectedOutput.shift(), msg);
+		test.deepEqual(data, output.shift(), msg);
 		next();
 	};
+
 	mapperStream.pipe(testStream);
 
 	for(var ind = 0; ind < input.length; ind++){
 		mapperStream.write(input[ind]);
 	}
 }
+
 module.exports = tests;
