@@ -141,6 +141,34 @@ tests.createMapperObjectConstant = function createMapperObjectConstant(test){
 }
 
 /**
+ * Test whether the Transform stream created by `createMapper()` maps fields
+ * correctly according to a function field.
+ */
+tests.createMapperFunction = function createMapperFunction(test){
+	var input = [
+		{a: "mIxEd"},
+		{a: "UPPER"},
+		{a: "12345"}
+	];
+
+	var mapperConfig = {
+		fields: {
+			lower: function lower(record){
+				return record.a.toLowerCase();
+			}
+		}
+	}
+
+	var output = [
+		{lower: "mixed"},
+		{lower: "upper"},
+		{lower: "12345"}
+	];
+
+	testCreateMapper(test, input, mapperConfig, output);
+}
+
+/**
  * Test whether the Transform stream created by `createMapper()`
  * preserves/discards objects according to `keep()`.
  */
