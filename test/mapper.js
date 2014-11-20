@@ -63,8 +63,7 @@ tests.getPropVal = function getPropVal(test){
 
 /**
  * Test whether the Transform stream created by `createMapper()` properly
- * remaps String fields, by writing a number of dummy objects through a simple
- * mapper.
+ * remaps String fields.
  */
 tests.createMapperFields = function createMapperFields(test){
 	var input = [
@@ -91,8 +90,7 @@ tests.createMapperFields = function createMapperFields(test){
 
 /**
  * Test whether the Transform stream created by `createMapper()` maps fields
- * correctly according to an object with a `coalesce` key, by writing a number
- * of dummy objects through a simple mapper.
+ * correctly according to an object with a `coalesce` key.
  */
 tests.createMapperObjectCoalesce = function createMapperObjectCoalesce(test){
 	var input = [
@@ -118,8 +116,7 @@ tests.createMapperObjectCoalesce = function createMapperObjectCoalesce(test){
 
 /**
  * Test whether the Transform stream created by `createMapper()` maps fields
- * correctly according to an object with a `constant` key, by writing a number
- * of dummy objects through a simple mapper.
+ * correctly according to an object with a `constant` key.
  */
 tests.createMapperObjectConstant = function createMapperObjectConstant(test){
 	var input = [
@@ -145,8 +142,7 @@ tests.createMapperObjectConstant = function createMapperObjectConstant(test){
 
 /**
  * Test whether the Transform stream created by `createMapper()`
- * preserves/discards objects according to `keep()`, by writing a number of
- * dummy objects through a simple mapper.
+ * preserves/discards objects according to `keep()`.
  */
 tests.createMapperKeep = function createMapperKeep(test){
 	var input = [
