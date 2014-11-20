@@ -1,8 +1,11 @@
 #! /usr/bin/env node
 
 /**
- * A CLI tool that wraps the `schema-mapper` library.
+ * A CLI tool that wraps the `schema-mapper` library. `./cli_tools.js --help`
+ * for usage instructions.
  */
+
+"use strict";
 
 var fs = require("fs");
 var jsonStream = require("JSONStream");

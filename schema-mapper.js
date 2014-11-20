@@ -1,3 +1,11 @@
+/**
+ * @file The main entry point for the schema-mapper library; exports two
+ * functions, for reading/evaluating rules files and then creating a converted
+ * data stream from rules objects.
+ */
+
+"use strict";
+
 var fs = require("fs");
 var combinedStream = require("combined-stream");
 var mapper = require("./lib/mapper");
