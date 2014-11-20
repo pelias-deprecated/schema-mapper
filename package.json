@@ -24,7 +24,7 @@
 		"schema-mapper": "bin/cli_tool.js"
 	},
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "node test/test.js | tap-spec"
 	},
 	"dependencies": {
 		"JSONStream": "0.9.0",
@@ -34,5 +34,9 @@
 		"osmium-stream": "1.0.1",
 		"shapefile-stream": "0.0.4",
 		"through": "2.3.6"
+	},
+	"devDependencies": {
+		"tape": "^3.0.3",
+		"tap-spec": "^0.2.0"
 	}
 }
