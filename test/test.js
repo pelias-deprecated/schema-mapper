@@ -22,7 +22,7 @@ function runTestFile(testFilePath){
 	for(var test in testModule){
 		if(testModule.hasOwnProperty(test)){
 			var testName = util.format(
-				"File: %s, Function: %s", testFilePath, test
+				"File: %s, function: %s.", testFilePath, test
 			);
 			tape(testName, testModule[test]);
 		}

@@ -66,14 +66,13 @@ tests.getPropVal = function getPropVal(test){
  * remaps String fields, by writing a number of dummy objects through a simple
  * mapper.
  */
-tests.createMapperFields = function createMapper(test){
+tests.createMapperFields = function createMapperFields(test){
 	var input = [
 		{a: 1, b: 2},
 		{a: 3, b: 4},
-		{a: 5, b: 6},
+		{a: 5, b: 6}
 	];
 
-	Error.stackTraceLimit = Infinity;
 	var mapperConfig = {
 		fields: {
 			col1: "a",
@@ -84,7 +83,7 @@ tests.createMapperFields = function createMapper(test){
 	var expectedOutput = [
 		{col1: 1, col2: 2},
 		{col1: 3, col2: 4},
-		{col1: 5, col2: 6},
+		{col1: 5, col2: 6}
 	];
 
 	test.plan(expectedOutput.length);
@@ -106,4 +105,49 @@ tests.createMapperFields = function createMapper(test){
 	}
 }
 
+/**
+ * Test whether the Transform stream created by `createMapper()`
+ * preserves/discards objects according to `keep()`, by writing a number of
+ * dummy objects through a simple mapper.
+ */
+tests.createMapperKeep = function createMapperKeep(test){
+	var input = [
+		{a: 1, b: 2},
+		{a: 2, b: 1},
+		{a: 5, b: 6}
+	];
+
+	var mapperConfig = {
+		keep: function keep(record){
+			return record.a + record.b === 3;
+		},
+		fields: {
+			"a": "a",
+			"b": "b"
+		}
+	}
+
+	var expectedOutput = [
+		{a: 1, b: 2},
+		{a: 2, b: 1},
+	];
+
+	test.plan(expectedOutput.length);
+
+	var mapperStream = mapper.createMapper(mapperConfig);
+	var testStream = new readableStream.Writable({objectMode: true});
+	testStream._write = function write(data, enc, next){
+		var msg = util.format(
+			"Remapped object `%s` matches expected.",
+			JSON.stringify(expectedOutput[ind])
+		);
+		test.deepEqual(data, expectedOutput.shift(), msg);
+		next();
+	};
+	mapperStream.pipe(testStream);
+
+	for(var ind = 0; ind < input.length; ind++){
+		mapperStream.write(input[ind]);
+	}
+}
 module.exports = tests;
