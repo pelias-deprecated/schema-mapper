@@ -27,6 +27,7 @@
 		"test": "node test/test.js | tap-spec"
 	},
 	"dependencies": {
+		"readable-stream": "1.0.33",
 		"JSONStream": "0.9.0",
 		"combined-stream": "0.0.7",
 		"fast-csv": "0.5.4",
