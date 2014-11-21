@@ -63,7 +63,8 @@ function createConverter(rules){
 		if(dataReader === null){
 			return null;
 		}
-		converter.append(dataReader.pipe(mapper(rules[ind].mapper)));
+		var dataMapper = mapper.createMapper(rules[ind].mapper);
+		converter.append(dataReader.pipe(dataMapper));
 	}
 	return converter;
 }

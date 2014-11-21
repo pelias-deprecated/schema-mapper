@@ -22,7 +22,7 @@ var reader = require("../lib/reader");
  *
  * @param {array of string} args `process.argv.slice(2)`
  */
-function handleUserArgs(args){
+function handleUserArgs(args, outputStream){
 	var helpMessage = [
 		"schema-mapper --help | --examine RULES | RULES [...]",
 		"",
@@ -57,7 +57,16 @@ function handleUserArgs(args){
 
 	// Remap any number of datasets according to specified RULES files.
 	else {
-		schemaMapper.loadRulesFiles(args, remap);
+		if(outputStream === undefined){
+			var outputStream = jsonStream.stringify(
+				'{"objects":[\n', ",\n", "\n]}\n"
+			);
+		}
+
+		schemaMapper.loadRulesFiles(args, function remapCallback(rules){
+			remap(rules, outputStream);
+		});
+		outputStream.pipe(process.stdout);
 	}
 }
 
@@ -89,7 +98,7 @@ function examine(rules){
  *
  * @param {object} rules A standard Rules object.
  */
-function remap(rules){
+function remap(rules, outputStream){
 	var dataConverter = schemaMapper.createConverter(rules);
 
 	if(dataConverter === null){
@@ -100,9 +109,9 @@ function remap(rules){
 		process.exit(1);
 	}
 
-	dataConverter
-		.pipe(jsonStream.stringify('{"objects":[\n', ",\n", "\n]}\n"))
-		.pipe(process.stdout);
+	dataConverter.pipe(outputStream);
 }
 
 handleUserArgs(process.argv.slice(2));
+
+module.exports = handleUserArgs;
