@@ -1,4 +1,7 @@
 # schema mapper
+
+[![NPM](https://nodei.co/npm/schema-mapper.png)](https://nodei.co/npm/schema-mapper/)
+
 A lightweight library and CLI tool for remapping datasets to different schemas. **schema-mapper** revolves around
 *rules* object, which specify how to:
 
