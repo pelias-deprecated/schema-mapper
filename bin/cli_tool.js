@@ -112,6 +112,9 @@ function remap(rules, outputStream){
 	dataConverter.pipe(outputStream);
 }
 
-handleUserArgs(process.argv.slice(2));
+var runFromCli = !module.parent;
+if(runFromCli){
+	handleUserArgs(process.argv.slice(2));
+}
 
 module.exports = handleUserArgs;
