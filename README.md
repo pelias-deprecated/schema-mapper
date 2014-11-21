@@ -9,6 +9,12 @@ A lightweight library and CLI tool for remapping datasets to different schemas. 
 npm install schema-mapper
 ```
 
+If you want access to the `schema-mapper` command line tool, install globally with:
+
+```
+[sudo] npm install -g schema-mapper
+```
+
 ## example
 
 For instance, if you want to convert a CSV file (called, say, `data.csv`) in the following format:
