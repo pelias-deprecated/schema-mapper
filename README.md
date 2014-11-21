@@ -5,6 +5,9 @@ A lightweight library and CLI tool for remapping datasets to different schemas. 
   * import a dataset, in the *reader* sub-object
   * modify values in the input objects and remap them onto keys in output objects, in the *mapper* sub-object
 
+```
+npm install schema-mapper
+```
 
 ## example
 
@@ -18,7 +21,7 @@ id,name,color
 
 to output objects like:
 
-```
+```javascript
 {
 	unique_id: 10,
 	text_name: "schema"
@@ -111,3 +114,35 @@ Read any number of files containing Javascript objects (not necessarily conformi
 
 ## cli tool
 Run `schema-mapper --help` for full usage information.
+
+# more examples
+Here's a more comprehensive example of a rules object. It can either be passed directly to `createConverter()`, or
+stuck in a file and used with the command-line `schema-mapper` tool.
+
+```javascript
+{
+	reader: {
+		path: "my.csv",
+		format: "csv",
+		options: {
+			delimiter: "\t",
+			quote: null // if your CSV has unterminated quotes
+		}
+	},
+	mapper: {
+		keep: function(record){
+			return record.id % 2 == 0; // only care about records with even IDs
+		},
+		mapper: {
+			key1: ".a.deeply.['nested value']",
+			key2: function(record){
+				return record.mixedCaseName.toLowerCase();
+			},
+			key3: {"constant", "Constant value. No touch."},
+			key4: {
+				"coalesce": ["possibly.null", "safe.fallback"]
+			}
+		}
+	}
+}
+```
