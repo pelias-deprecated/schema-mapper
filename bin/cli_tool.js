@@ -52,7 +52,9 @@ function handleUserArgs(args, outputStream){
 			);
 			process.exit(1);
 		}
-		schemaMapper.loadRulesFile(args[1], examine);
+		schemaMapper.loadRulesFiles(args[1], function (rules){
+			examine(rules[0]);
+		});
 	}
 
 	// Remap any number of datasets according to specified RULES files.
@@ -61,12 +63,12 @@ function handleUserArgs(args, outputStream){
 			var outputStream = jsonStream.stringify(
 				'{"objects":[\n', ",\n", "\n]}\n"
 			);
+			outputStream.pipe(process.stdout);
 		}
 
 		schemaMapper.loadRulesFiles(args, function remapCallback(rules){
 			remap(rules, outputStream);
 		});
-		outputStream.pipe(process.stdout);
 	}
 }
 
