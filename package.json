@@ -8,7 +8,7 @@
 		"gis",
 		"conform"
 	],
-	"version": "1.0.2",
+	"version": "1.1.0",
 	"author": "Severyn Kozak <severyn.kozak@gmail.com> (http://sevko.io/)",
 	"license": "MIT",
 	"homepage": "https://github.com/pelias/schema-mapper",
