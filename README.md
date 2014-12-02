@@ -46,7 +46,7 @@ you'd use a *rules* object like the following:
 ```javascript
 {
 	reader: {
-		path
+		path: "file.csv",
 		format: "csv",
 		options: {
 			headers: true
@@ -65,7 +65,8 @@ A *rules* object consists of `reader` and `mapper` objects.
 ## reader
 The `reader` object has the following keys (required unless specified otherwise):
 
-  * `path`: the path of the file to import
+  * `path`: either a string path of the file to import, or an array of such strings. If multiple paths are given, the
+    data-streams will be combined and then fed into the mapper.
   * `format`: the format of the file at `path`. **schema-mapper** currently supports the following:
     * `csv`: *CSVs*, using [fast-csv](https://www.npmjs.org/package/fast-csv)
     * `shp`: *shapefiles*, using [shapefile-stream](https://www.npmjs.org/package/shapefile-stream)
@@ -131,7 +132,7 @@ stuck in a file and used with the command-line `schema-mapper` tool.
 ```javascript
 {
 	reader: {
-		path: "my.csv",
+		path: ["a.csv", "b.csv", "c.csv"],
 		format: "csv",
 		options: {
 			delimiter: "\t",
